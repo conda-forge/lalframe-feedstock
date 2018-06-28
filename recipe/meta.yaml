@@ -12,7 +12,7 @@ source:
   sha256: {{ sha256 }}
 
 build:
-  number: 0
+  number: 1
   skip: true  # [win]
 
 requirements:
@@ -22,15 +22,12 @@ requirements:
     - {{ compiler('c') }}
     - swig>=3.0.7
   host:
+    - gsl
     - libframe
     - lal
     - python
     - numpy
-  run:
-    - libframe
-    - lal
-    - python
-    - numpy
+    - python-lal
 
 test:
   imports:
@@ -40,16 +37,78 @@ test:
     - lalframe_version --verbose
     - lalfr-vis --help
 
+outputs:
+  - name: lalframe
+    requirements:
+      build:
+        - {{ compiler('c') }}
+      host:
+        - gsl
+        - libframe
+        - lal
+      run:
+        - gsl
+        - libframe
+        - lal
+    files:
+      - bin/lalfr-*
+      - bin/lalframe_version
+      - etc/lalframe-user-env.*
+      - include/lal/Aggregation.h
+      - include/lal/FrameCalibration.h
+      - include/lal/LALFr*.h
+      - lib/liblalframe*
+      - lib/pkgconfig/lalframe*.pc
+      - share/man/man1/lalfr-*
+    test:
+      commands:
+        - lalframe_version --verbose
+        - lalfr-vis --help
+    about:
+      home: https://wiki.ligo.org/DASWG/LALSuite
+      license: GPLv3
+      license_family: GPL
+      license_file: COPYING
+      summary: LSC Algorithm Frame Library
+      description: |
+        The LSC Algorithm Frame Library for gravitational wave data analysis.
+        This package contains the shared-object libraries needed to run
+        applications that use the LAL Frame library.
+  - name: python-lalframe
+    requirements:
+      build:
+        - {{ compiler('c') }}
+        - swig>=3.0.7
+      host:
+        - {{ pin_subpackage('lalframe', exact=True) }}
+        - python
+        - numpy
+      run:
+        - {{ pin_subpackage('lalframe', exact=True) }}
+        - python
+        - numpy
+        - python-lal
+    files:
+      - lib/python*/site-packages/lalframe/**
+    test:
+      imports:
+        - lalframe
+        - lalframe.frread
+    about:
+      home: https://wiki.ligo.org/DASWG/LALSuite
+      license: GPLv3
+      license_family: GPL
+      license_file: COPYING
+      summary: LSC Algorithm Frame Library
+      description: |
+        The LSC Algorithm Frame Library for gravitational wave data analysis.
+        This package contains the python bindings.
+
 about:
   home: https://wiki.ligo.org/DASWG/LALSuite
   license: GPLv3
   license_family: GPL
-  license_file: COPYING
   summary: LSC Algorithm Frame Library
-  description: |
-    The LSC Algorithm Frame Library for gravitational wave data analysis.
-    This package contains the shared-object libraries and python bindings
-    needed to run applications that use the LAL Frame library.
 
 extra:
   recipe-maintainers:
