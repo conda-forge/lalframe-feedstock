@@ -10,8 +10,8 @@ Feedstock license: BSD 3-Clause
 Summary: LSC Algorithm Frame Library
 
 The LSC Algorithm Frame Library for gravitational wave data analysis.
-This package contains the shared-object libraries and python bindings
-needed to run applications that use the LAL Frame library.
+This package contains the shared-object libraries needed to run
+applications that use the LAL Frame library.
 
 
 Current build status
@@ -27,6 +27,7 @@ Current release info
 | Name | Downloads | Version | Platforms |
 | --- | --- | --- | --- |
 | [![Conda Recipe](https://img.shields.io/badge/recipe-lalframe-green.svg)](https://anaconda.org/conda-forge/lalframe) | [![Conda Downloads](https://img.shields.io/conda/dn/conda-forge/lalframe.svg)](https://anaconda.org/conda-forge/lalframe) | [![Conda Version](https://img.shields.io/conda/vn/conda-forge/lalframe.svg)](https://anaconda.org/conda-forge/lalframe) | [![Conda Platforms](https://img.shields.io/conda/pn/conda-forge/lalframe.svg)](https://anaconda.org/conda-forge/lalframe) |
+| [![Conda Recipe](https://img.shields.io/badge/recipe-python--lalframe-green.svg)](https://anaconda.org/conda-forge/python-lalframe) | [![Conda Downloads](https://img.shields.io/conda/dn/conda-forge/python-lalframe.svg)](https://anaconda.org/conda-forge/python-lalframe) | [![Conda Version](https://img.shields.io/conda/vn/conda-forge/python-lalframe.svg)](https://anaconda.org/conda-forge/python-lalframe) | [![Conda Platforms](https://img.shields.io/conda/pn/conda-forge/python-lalframe.svg)](https://anaconda.org/conda-forge/python-lalframe) |
 
 Installing lalframe
 ===================
@@ -37,10 +38,10 @@ Installing `lalframe` from the `conda-forge` channel can be achieved by adding `
 conda config --add channels conda-forge
 ```
 
-Once the `conda-forge` channel has been enabled, `lalframe` can be installed with:
+Once the `conda-forge` channel has been enabled, `lalframe, python-lalframe` can be installed with:
 
 ```
-conda install lalframe
+conda install lalframe python-lalframe
 ```
 
 It is possible to list all of the versions of `lalframe` available on your platform with:
