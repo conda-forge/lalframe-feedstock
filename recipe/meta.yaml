@@ -1,6 +1,6 @@
 {% set name = "lalframe" %}
-{% set version = "1.4.3" %}
-{% set sha256 = "cbb6ed39abb5a02d792523fc53208330cf8adf02bc4290cac635d42577acb5b1" %}
+{% set version = "1.4.4" %}
+{% set sha256 = "518016915e4189fabf2a247ebe227eb8733afc4a1daa6e7ae6b30a1d87c61707" %}
 
 package:
   name: {{ name }}
@@ -12,7 +12,7 @@ source:
   sha256: {{ sha256 }}
 
 build:
-  number: 2
+  number: 0
   skip: true  # [win]
 
 requirements:
@@ -20,49 +20,30 @@ requirements:
     - pkg-config
     - make
     - {{ compiler('c') }}
-    - swig>=3.0.7
   host:
+    - swig >=3.0.7
     - gsl
     - libframe
-    - lal
-    - python
-    - numpy
-    - python-lal
-
-test:
-  imports:
-    - lalframe
-    - lalframe.frread
-  commands:
-    - lalframe_version --verbose
-    - lalfr-vis --help
+    - ldas-tools-framecpp >=2.5.5
+    - lal >=6.19.0
 
 outputs:
   - name: lalframe
+    script: install-c.sh
     requirements:
-      build:
-        - {{ compiler('c') }}
       host:
+        - {{ compiler('c') }}
+        - make
+        - swig >=3.0.7
         - gsl
         - libframe
-        - lal
+        - ldas-tools-framecpp >=2.5.5
+        - lal >=6.19.0
       run:
         - gsl
         - libframe
-        - lal
-    files:
-      - bin/lalfr-*
-      - bin/lalframe_version
-      - etc/lalframe-user-env.*
-      - include/lal/LALFrame*.h
-      - include/lal/SWIGLALFrame*
-      - include/lal/swiglalframe*
-      - include/lal/Aggregation.h
-      - include/lal/FrameCalibration.h
-      - include/lal/LALFrStream.h
-      - lib/liblalframe*
-      - lib/pkgconfig/lalframe*.pc
-      - share/man/man1/lalfr-*
+        - ldas-tools-framecpp >=2.5.5
+        - lal >=6.19.0
     test:
       commands:
         - lalframe_version --verbose
@@ -78,21 +59,21 @@ outputs:
         This package contains the shared-object libraries needed to run
         applications that use the LAL Frame library.
   - name: python-lalframe
+    script: install-python.sh
     requirements:
-      build:
-        - {{ compiler('c') }}
-        - swig>=3.0.7
       host:
+        - {{ compiler('c') }}
+        - make
+        - pkg-config
+        - swig >=3.0.7
         - {{ pin_subpackage('lalframe', exact=True) }}
         - python
         - numpy
       run:
         - {{ pin_subpackage('lalframe', exact=True) }}
         - python
-        - numpy
-        - python-lal
-    files:
-      - lib/python*/site-packages/lalframe/**
+        - {{ pin_compatible('numpy') }}
+        - python-lal >=6.19.0
     test:
       imports:
         - lalframe
