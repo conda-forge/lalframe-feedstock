@@ -39,6 +39,9 @@ test:
 
 outputs:
   - name: lalframe
+    build:
+      run_exports:
+        - {{ pin_subpackage("lalframe", max_pin="x.x") }}
 
   - name: python-lalframe
     script: install-python.sh
