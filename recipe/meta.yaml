@@ -25,12 +25,10 @@ requirements:
     - pkg-config
     - swig >=3.0.7
   host:
-    - gsl
     - lal >=6.19.0
-    - libframe
     - ldas-tools-framecpp >=2.5.5
+    - libframe
   run:
-    - gsl
     - lal
     - ldas-tools-framecpp >=2.5.5
     - libframe
@@ -61,7 +59,10 @@ outputs:
         - numpy
         - python
       run:
+        - lal
         - {{ pin_subpackage('lalframe', exact=True) }}
+        - ldas-tools-framecpp
+        - libframe
         - {{ pin_compatible('numpy') }}
         - python
         - python-lal >=6.19.0
