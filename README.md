@@ -1,7 +1,7 @@
 About lalframe
 ==============
 
-Home: https://wiki.ligo.org/Computing/DASWG/LALSuite
+Home: https://wiki.ligo.org/Computing/LALSuite
 
 Package license: GPLv3
 
