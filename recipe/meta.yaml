@@ -10,9 +10,12 @@ source:
   fn: {{ name }}-{{ version }}.tar.xz
   url: http://software.ligo.org/lscsoft/source/lalsuite/{{ name }}-{{ version }}.tar.xz
   sha256: {{ sha256 }}
+  patches:
+    # fix overlinking
+    - pkgconfig.patch
 
 build:
-  number: 1002
+  number: 1003
   skip: true  # [win]
 
 requirements:
@@ -22,12 +25,10 @@ requirements:
     - pkg-config
     - swig >=3.0.7
   host:
-    - gsl
     - lal >=6.19.0
-    - libframe
     - ldas-tools-framecpp >=2.5.5
+    - libframe
   run:
-    - gsl
     - lal
     - ldas-tools-framecpp >=2.5.5
     - libframe
@@ -58,7 +59,10 @@ outputs:
         - numpy
         - python
       run:
+        - lal
         - {{ pin_subpackage('lalframe', exact=True) }}
+        - ldas-tools-framecpp
+        - libframe
         - {{ pin_compatible('numpy') }}
         - python
         - python-lal >=6.19.0
@@ -79,8 +83,8 @@ outputs:
         This package contains the python bindings.
 
 about:
-  home: https://wiki.ligo.org/Computing/DASWG/LALSuite
-  doc_url: https://docs.ligo.org/lscsoft/lalsuite/lalframe/
+  home: https://wiki.ligo.org/Computing/LALSuite
+  doc_url: https://lscsoft.docs.ligo.org/lalsuite/lalframe/
   dev_url: https://git.ligo.org/lscsoft/lalsuite/
   license: GPLv3
   license_family: GPL
