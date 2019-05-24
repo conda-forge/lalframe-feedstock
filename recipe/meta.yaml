@@ -1,6 +1,6 @@
 {% set name = "lalframe" %}
-{% set version = "1.4.4" %}
-{% set sha256 = "518016915e4189fabf2a247ebe227eb8733afc4a1daa6e7ae6b30a1d87c61707" %}
+{% set version = "1.4.5" %}
+{% set sha256 = "c1700e725348c5eb0c32f60890041ab33b54ba77ead88a011569445b91c067e8" %}
 
 package:
   name: {{ name }}
@@ -15,7 +15,7 @@ source:
     - pkgconfig.patch
 
 build:
-  number: 1003
+  number: 0
   skip: true  # [win]
 
 requirements:
