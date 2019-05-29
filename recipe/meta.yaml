@@ -1,6 +1,9 @@
 {% set name = "lalframe" %}
-{% set version = "1.4.4" %}
-{% set sha256 = "518016915e4189fabf2a247ebe227eb8733afc4a1daa6e7ae6b30a1d87c61707" %}
+{% set version = "1.4.5" %}
+{% set sha256 = "c1700e725348c5eb0c32f60890041ab33b54ba77ead88a011569445b91c067e8" %}
+
+{% set lal_version = "6.20.0" %}
+{% set framecpp_version = "2.5.5" %}
 
 package:
   name: {{ name }}
@@ -10,12 +13,9 @@ source:
   fn: {{ name }}-{{ version }}.tar.xz
   url: http://software.ligo.org/lscsoft/source/lalsuite/{{ name }}-{{ version }}.tar.xz
   sha256: {{ sha256 }}
-  patches:
-    # fix overlinking
-    - pkgconfig.patch
 
 build:
-  number: 1003
+  number: 0
   skip: true  # [win]
 
 requirements:
@@ -25,12 +25,12 @@ requirements:
     - pkg-config
     - swig >=3.0.7
   host:
-    - lal >=6.19.0
-    - ldas-tools-framecpp >=2.5.5
+    - lal >={{ lal_version }}
+    - ldas-tools-framecpp >={{ framecpp_version }}
     - libframe
   run:
-    - lal
-    - ldas-tools-framecpp >=2.5.5
+    - lal >={{ lal_version }}
+    - ldas-tools-framecpp >={{ framecpp_version }}
     - libframe
 
 test:
@@ -59,19 +59,19 @@ outputs:
         - numpy
         - python
       run:
-        - lal
+        - lal >={{ lal_version }}
         - {{ pin_subpackage('lalframe', exact=True) }}
-        - ldas-tools-framecpp
+        - ldas-tools-framecpp >={{ framecpp_version }}
         - libframe
         - {{ pin_compatible('numpy') }}
         - python
-        - python-lal >=6.19.0
+        - python-lal >={{ lal_version }}
     test:
       imports:
         - lalframe
         - lalframe.frread
     about:
-      home: https://wiki.ligo.org/Computing/DASWG/LALSuite
+      home: https://wiki.ligo.org/Computing/LALSuite
       doc_url: https://lscsoft.docs.ligo.org/lalsuite/lalframe/
       dev_url: https://git.ligo.org/lscsoft/lalsuite/
       license: GPLv3
