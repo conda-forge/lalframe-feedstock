@@ -2,20 +2,20 @@
 {% set version = "1.4.5" %}
 {% set sha256 = "c1700e725348c5eb0c32f60890041ab33b54ba77ead88a011569445b91c067e8" %}
 
+# dependencies
 {% set lal_version = "6.20.0" %}
 {% set framecpp_version = "2.5.5" %}
 
 package:
-  name: {{ name }}
-  version: {{ version }}
+  name: "{{ name|lower }}"
+  version: "{{ version }}"
 
 source:
-  fn: {{ name }}-{{ version }}.tar.xz
-  url: http://software.ligo.org/lscsoft/source/lalsuite/{{ name }}-{{ version }}.tar.xz
-  sha256: {{ sha256 }}
+  url: "http://software.ligo.org/lscsoft/source/lalsuite/{{ name }}-{{ version }}.tar.xz"
+  sha256: "{{ sha256 }}"
 
 build:
-  number: 0
+  number: 1
   skip: true  # [win]
 
 requirements:
@@ -34,9 +34,18 @@ requirements:
     - libframe
 
 test:
+  source_files:
+    - test/F-TEST-600000000-60.gwf
   commands:
     - lalframe_version --verbose
-    - lalfr-vis --help
+    - lalfr-cksum test/F-TEST-600000000-60.gwf
+    - lalfr-cut H1:LSC-AS_Q test/F-TEST-600000000-60.gwf > /dev/null
+    - lalfr-dump test/F-TEST-600000000-60.gwf
+    - lalfr-paste test/F-TEST-600000000-60.gwf > /dev/null
+    - lalfr-split test/F-TEST-600000000-60.gwf
+    - lalfr-stat test/F-TEST-600000000-60.gwf
+    - lalfr-stream --channel H1:LSC-AS_Q --start-time 600000000 --duration 0.01 --frame-glob test/F-TEST-*.gwf
+    - lalfr-vis --channel H1:LSC-AS_Q --start-time 600000000 --duration 0.01 --frame-glob test/F-TEST-*.gwf
 
 outputs:
   - name: lalframe
@@ -46,8 +55,6 @@ outputs:
 
   - name: python-lalframe
     script: install-python.sh
-    build:
-      activate_in_script: True
     requirements:
       build:
         - {{ compiler('c') }}
@@ -67,29 +74,33 @@ outputs:
         - python
         - python-lal >={{ lal_version }}
     test:
+      source_files:
+        - test/F-TEST-600000000-60.gwf
+      commands:
+        - python -c "from lalframe import frread; print(frread.read_timeseries('test/F-TEST-600000000-60.gwf', 'H1:LSC-AS_Q', 600000000, 1).data.data)"
       imports:
         - lalframe
         - lalframe.frread
     about:
-      home: https://wiki.ligo.org/Computing/LALSuite
-      doc_url: https://lscsoft.docs.ligo.org/lalsuite/lalframe/
-      dev_url: https://git.ligo.org/lscsoft/lalsuite/
-      license: GPLv3
-      license_family: GPL
-      license_file: COPYING
-      summary: LSC Algorithm Frame Library
+      home: "https://wiki.ligo.org/Computing/LALSuite"
+      doc_url: "https://lscsoft.docs.ligo.org/lalsuite/lalframe/"
+      dev_url: "https://git.ligo.org/lscsoft/lalsuite/"
+      license: "GPL-3.0-or-later"
+      license_family: "GPL"
+      license_file: "COPYING"
+      summary: "LSC Algorithm Frame Library"
       description: |
         The LSC Algorithm Frame Library for gravitational wave data analysis.
         This package contains the python bindings.
 
 about:
-  home: https://wiki.ligo.org/Computing/LALSuite
-  doc_url: https://lscsoft.docs.ligo.org/lalsuite/lalframe/
-  dev_url: https://git.ligo.org/lscsoft/lalsuite/
-  license: GPLv3
-  license_family: GPL
-  license_file: COPYING
-  summary: LSC Algorithm Frame Library
+  home: "https://wiki.ligo.org/Computing/LALSuite"
+  doc_url: "https://lscsoft.docs.ligo.org/lalsuite/lalframe/"
+  dev_url: "https://git.ligo.org/lscsoft/lalsuite/"
+  license: "GPL-3.0-or-later"
+  license_family: "GPL"
+  license_file: "COPYING"
+  summary: "LSC Algorithm Frame Library"
   description: |
     The LSC Algorithm Frame Library for gravitational wave data analysis.
     This package contains the shared-object libraries needed to run
