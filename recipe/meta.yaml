@@ -3,7 +3,7 @@
 {% set sha256 = "a2c81201c36e64fe9467ac139374fe8fa793c56e48611e90fe6beca3a24f85dc" %}
 
 # dependencies
-{% set lal_version = "6.20.0" %}
+{% set lal_version = "6.21.0" %}
 {% set framecpp_version = "2.5.5" %}
 
 package:
@@ -22,7 +22,7 @@ requirements:
   build:
     - {{ compiler('c') }}
     - make
-    - pkg-config
+    - pkg-config >=0.18.0
     - swig >=3.0.7
   host:
     - lal >={{ lal_version }}
@@ -34,18 +34,23 @@ requirements:
     - libframe
 
 test:
+  requires:
+    - pkg-config  # [unix]
   source_files:
     - test/F-TEST-600000000-60.gwf
   commands:
+    - pushd test
     - lalframe_version --verbose
-    - lalfr-cksum test/F-TEST-600000000-60.gwf
-    - lalfr-cut H1:LSC-AS_Q test/F-TEST-600000000-60.gwf > /dev/null
-    - lalfr-dump test/F-TEST-600000000-60.gwf
-    - lalfr-paste test/F-TEST-600000000-60.gwf > /dev/null
-    - lalfr-split test/F-TEST-600000000-60.gwf
-    - lalfr-stat test/F-TEST-600000000-60.gwf
-    - lalfr-stream --channel H1:LSC-AS_Q --start-time 600000000 --duration 0.01 --frame-glob test/F-TEST-*.gwf
-    - lalfr-vis --channel H1:LSC-AS_Q --start-time 600000000 --duration 0.01 --frame-glob test/F-TEST-*.gwf
+    - lalfr-cksum F-TEST-600000000-60.gwf
+    - lalfr-cut H1:LSC-AS_Q F-TEST-600000000-60.gwf > /dev/null
+    - lalfr-dump F-TEST-600000000-60.gwf
+    - lalfr-paste F-TEST-600000000-60.gwf > /dev/null
+    - lalfr-split F-TEST-600000000-60.gwf
+    - lalfr-stat F-TEST-600000000-60.gwf
+    - lalfr-stream --channel H1:LSC-AS_Q --start-time 600000000 --duration 0.01 --frame-glob F-TEST-*.gwf
+    - lalfr-vis --channel H1:LSC-AS_Q --start-time 600000000 --duration 0.01 --frame-glob F-TEST-*.gwf
+    - popd
+    - test "$(pkg-config --modversion ${PKG_NAME})" == "${PKG_VERSION}"  # [unix]
 
 outputs:
   - name: lalframe
@@ -59,7 +64,7 @@ outputs:
       build:
         - {{ compiler('c') }}
         - make
-        - pkg-config
+        - pkg-config >=0.18.0
         - swig >=3.0.7
       host:
         - {{ pin_subpackage('lalframe', exact=True) }}
@@ -68,19 +73,24 @@ outputs:
       run:
         - lal >={{ lal_version }}
         - {{ pin_subpackage('lalframe', exact=True) }}
-        - ldas-tools-framecpp >={{ framecpp_version }}
-        - libframe
+        - ldas-tools-framecpp >={{ framecpp_version }}  # [linux]
+        - libframe  # [linux]
         - {{ pin_compatible('numpy') }}
         - python
         - python-lal >={{ lal_version }}
     test:
-      source_files:
-        - test/F-TEST-600000000-60.gwf
-      commands:
-        - python -c "from lalframe import frread; print(frread.read_timeseries('test/F-TEST-600000000-60.gwf', 'H1:LSC-AS_Q', 600000000, 1).data.data)"
       imports:
         - lalframe
         - lalframe.frread
+      requires:
+        - mock  # [py<33]
+        - pathlib  # [py<34]
+        - pytest >=4.0.0a0
+      source_files:
+        - test/F-TEST-600000060-60.gwf
+        - test/python
+      commands:
+        - pushd test/python; python -m pytest -v; popd
     about:
       home: "https://wiki.ligo.org/Computing/LALSuite"
       doc_url: "https://lscsoft.docs.ligo.org/lalsuite/lalframe/"
