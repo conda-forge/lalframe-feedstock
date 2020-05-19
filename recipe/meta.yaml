@@ -13,11 +13,14 @@ package:
 source:
   url: "http://software.ligo.org/lscsoft/source/lalsuite/{{ name }}-{{ version }}.tar.xz"
   sha256: "{{ sha256 }}"
+  patches:
+    # relink against new libframel
+    - libframel.patch
 
 build:
   error_overdepending: true
   error_overlinking: true
-  number: 2
+  number: 3
   skip: true  # [win]
 
 requirements:
@@ -29,11 +32,11 @@ requirements:
   host:
     - lal >={{ lal_version }}
     - ldas-tools-framecpp >={{ framecpp_version }}
-    - libframe
+    - libframel
   run:
     - lal >={{ lal_version }}
     - ldas-tools-framecpp >={{ framecpp_version }}
-    - libframe
+    - libframel
 
 test:
   requires:
@@ -81,7 +84,7 @@ outputs:
         - lal >={{ lal_version }}
         - {{ pin_subpackage('lalframe', exact=True) }}
         - ldas-tools-framecpp >={{ framecpp_version }}  # [linux]
-        - libframe  # [linux]
+        - libframel  # [linux]
         - {{ pin_compatible('numpy') }}
         - python
         - python-lal >={{ lal_version }}

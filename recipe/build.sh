@@ -9,6 +9,8 @@ set -e
 	--disable-python \
 	--disable-swig-octave \
 	--disable-swig-python \
+	--enable-framec \
+	--enable-framel \
 	--enable-silent-rules \
 	--enable-swig-iface \
 ;
