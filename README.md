@@ -163,6 +163,3 @@ Feedstock Maintainers
 * [@duncanmmacleod](https://github.com/duncanmmacleod/)
 * [@skymoo](https://github.com/skymoo/)
 
-
-<!-- dummy commit to enable rerendering -->
-
