@@ -1,18 +1,18 @@
 {% set name = "lalframe" %}
-{% set version = "1.5.0" %}
-{% set sha256 = "a2c81201c36e64fe9467ac139374fe8fa793c56e48611e90fe6beca3a24f85dc" %}
+{% set version = "1.5.1" %}
+{% set sha256 = "39604c2e012babf0a67322e71b91119206c41dd35eff8aaa0644aac932abe73d" %}
 
 # dependencies
 {% set lal_version = "6.21.0" %}
 {% set framecpp_version = "2.5.5" %}
 
 package:
-  name: "{{ name|lower }}"
-  version: "{{ version }}"
+  name: {{ name|lower }}
+  version: {{ version }}
 
 source:
-  url: "http://software.ligo.org/lscsoft/source/lalsuite/{{ name }}-{{ version }}.tar.xz"
-  sha256: "{{ sha256 }}"
+  url: http://software.ligo.org/lscsoft/source/lalsuite/{{ name }}-{{ version }}.tar.xz
+  sha256: {{ sha256 }}
   patches:
     # relink against new libframel
     - libframel.patch
@@ -20,7 +20,7 @@ source:
 build:
   error_overdepending: true
   error_overlinking: true
-  number: 4
+  number: 0
   skip: true  # [win]
 
 requirements:
@@ -102,25 +102,25 @@ outputs:
       commands:
         - pushd test/python; python -m pytest -v; popd
     about:
-      home: "https://wiki.ligo.org/Computing/LALSuite"
-      doc_url: "https://lscsoft.docs.ligo.org/lalsuite/lalframe/"
-      dev_url: "https://git.ligo.org/lscsoft/lalsuite/"
-      license: "GPL-2.0-or-later"
-      license_family: "GPL"
-      license_file: "COPYING"
-      summary: "LSC Algorithm Frame Library"
+      home: https://wiki.ligo.org/Computing/LALSuite
+      doc_url: https://lscsoft.docs.ligo.org/lalsuite/lalframe/
+      dev_url: https://git.ligo.org/lscsoft/lalsuite/
+      license: GPL-2.0-or-later
+      license_family: GPL
+      license_file: COPYING
+      summary: LSC Algorithm Frame Library
       description: |
         The LSC Algorithm Frame Library for gravitational wave data analysis.
         This package contains the python bindings.
 
 about:
-  home: "https://wiki.ligo.org/Computing/LALSuite"
-  doc_url: "https://lscsoft.docs.ligo.org/lalsuite/lalframe/"
-  dev_url: "https://git.ligo.org/lscsoft/lalsuite/"
-  license: "GPL-2.0-or-later"
-  license_family: "GPL"
-  license_file: "COPYING"
-  summary: "LSC Algorithm Frame Library"
+  home: https://wiki.ligo.org/Computing/LALSuite
+  doc_url: https://lscsoft.docs.ligo.org/lalsuite/lalframe/
+  dev_url: https://git.ligo.org/lscsoft/lalsuite/
+  license: GPL-2.0-or-later
+  license_family: GPL
+  license_file: COPYING
+  summary: LSC Algorithm Frame Library
   description: |
     The LSC Algorithm Frame Library for gravitational wave data analysis.
     This package contains the shared-object libraries needed to run
