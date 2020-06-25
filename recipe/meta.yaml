@@ -3,8 +3,9 @@
 {% set sha256 = "39604c2e012babf0a67322e71b91119206c41dd35eff8aaa0644aac932abe73d" %}
 
 # dependencies
-{% set lal_version = "6.21.0" %}
+{% set lal_version = "7.0.0" %}
 {% set framecpp_version = "2.5.5" %}
+{% set framel_version = "8.39.1" %}
 
 package:
   name: {{ name|lower }}
@@ -13,9 +14,6 @@ package:
 source:
   url: http://software.ligo.org/lscsoft/source/lalsuite/{{ name }}-{{ version }}.tar.xz
   sha256: {{ sha256 }}
-  patches:
-    # relink against new libframel
-    - libframel.patch
 
 build:
   error_overdepending: true
@@ -28,15 +26,15 @@ requirements:
     - {{ compiler('c') }}
     - make
     - pkg-config >=0.18.0
-    - swig >=3.0.7
+    - swig >=3.0.9
   host:
     - lal >={{ lal_version }}
     - ldas-tools-framecpp >={{ framecpp_version }}
-    - libframel
+    - libframel >={{ framel_version }}
   run:
     - lal >={{ lal_version }}
     - ldas-tools-framecpp >={{ framecpp_version }}
-    - libframel
+    - libframel >={{ framel_version }}
 
 test:
   requires:
@@ -84,7 +82,7 @@ outputs:
         - lal >={{ lal_version }}
         - {{ pin_subpackage('lalframe', exact=True) }}
         - ldas-tools-framecpp >={{ framecpp_version }}  # [linux]
-        - libframel  # [linux]
+        - libframel >={{ framel_version }}  # [linux]
         - {{ pin_compatible('numpy') }}
         - python
         - python-lal >={{ lal_version }}
@@ -93,8 +91,6 @@ outputs:
         - lalframe
         - lalframe.frread
       requires:
-        - mock  # [py<33]
-        - pathlib  # [py<34]
         - pytest >=4.0.0a0
       source_files:
         - test/F-TEST-600000060-60.gwf
