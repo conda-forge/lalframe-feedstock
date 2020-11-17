@@ -3,9 +3,9 @@
 {% set sha256 = "dba39a74c6e630ee74ae817e6fb6ee2f15958b167592269988628c2df17bb879" %}
 
 # dependencies
-{% set lal_version = "7.0.0" %}
+{% set lal_version = "7.1.0" %}
 {% set framecpp_version = "2.5.5" %}
-{% set framel_version = "8.39.1" %}
+{% set framel_version = "8.39.2" %}
 
 package:
   name: {{ name|lower }}
