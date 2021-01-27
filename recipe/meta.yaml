@@ -1,6 +1,6 @@
 {% set name = "lalframe" %}
-{% set version = "1.5.2" %}
-{% set sha256 = "dba39a74c6e630ee74ae817e6fb6ee2f15958b167592269988628c2df17bb879" %}
+{% set version = "1.5.3" %}
+{% set sha256 = "d0300611e706d5ca09b85ed00b4714d671a1d67a429714b5618bce4dae042de6" %}
 
 # dependencies
 {% set lal_version = "7.1.0" %}
