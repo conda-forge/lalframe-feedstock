@@ -104,7 +104,7 @@ outputs:
         - test/python
         - test/F-TEST-*.gwf
       commands:
-        - python -m pytest -rs -v --junit-xml=junit.xml test/python
+        - python -m pytest -rs -v test/python
     about:
       home: https://wiki.ligo.org/Computing/LALSuite
       doc_url: https://lscsoft.docs.ligo.org/lalsuite/lalframe/
