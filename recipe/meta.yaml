@@ -6,7 +6,6 @@
 {% set lal_version = "7.1.0" %}
 {% set framecpp_version = "2.5.5" %}
 {% set framel_version = "8.39.2" %}
-{% set numpy_version = "1.7" %}
 {% set swig_version = "3.0.10" %}
 
 package:
