@@ -5,25 +5,26 @@
 #
 
 set -e
-pushd ${SRC_DIR}
+
+# build python in a sub-directory using a copy of the C build
+_builddir="_build${PY_VER}"
+cp -r _build ${_builddir}
+cd ${_builddir}
 
 # configure only python bindings and pure-python extras
-./configure \
-	--prefix="${PREFIX}" \
+${SRC_DIR}/configure \
 	--disable-doxygen \
 	--disable-gcc-flags \
 	--disable-swig-iface \
 	--enable-python \
-	--enable-silent-rules \
 	--enable-swig-python \
+	--prefix=$PREFIX \
 ;
 
 # build
-make -j ${CPU_COUNT} -C swig
-make -j ${CPU_COUNT} -C python
+make -j ${CPU_COUNT} V=1 VERBOSE=1 -C swig
+make -j ${CPU_COUNT} V=1 VERBOSE=1 -C python
 
 # install
-make -j ${CPU_COUNT} -C swig install-exec-am  # swig bindings
-make -j ${CPU_COUNT} -C python install  # pure-python extras
-
-popd
+make -j ${CPU_COUNT} V=1 VERBOSE=1 -C swig install-exec  # swig bindings
+make -j ${CPU_COUNT} V=1 VERBOSE=1 -C python install  # pure-python extras

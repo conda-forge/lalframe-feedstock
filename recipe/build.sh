@@ -2,24 +2,25 @@
 
 set -e
 
+# use out-of-tree build
+mkdir -pv _build
+cd _build
+
 # configure
-./configure \
-	--prefix="${PREFIX}" \
+${SRC_DIR}/configure \
+	--disable-doxygen \
 	--disable-gcc-flags \
 	--disable-python \
 	--disable-swig-octave \
 	--disable-swig-python \
 	--enable-framec \
 	--enable-framel \
-	--enable-silent-rules \
 	--enable-swig-iface \
+	--prefix="${PREFIX}" \
 ;
 
 # build
-make -j ${CPU_COUNT}
+make -j ${CPU_COUNT} V=1 VERBOSE=1
 
 # test
-make -j ${CPU_COUNT} check
-
-# install
-make -j ${CPU_COUNT} install
+make -j ${CPU_COUNT} V=1 VERBOSE=1 check
