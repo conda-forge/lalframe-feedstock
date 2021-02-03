@@ -16,6 +16,7 @@ ${SRC_DIR}/configure \
 	--disable-doxygen \
 	--disable-gcc-flags \
 	--disable-swig-iface \
+	--enable-help2man \
 	--enable-python \
 	--enable-swig-python \
 	--prefix=$PREFIX \
