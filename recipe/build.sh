@@ -15,6 +15,7 @@ ${SRC_DIR}/configure \
 	--disable-swig-python \
 	--enable-framec \
 	--enable-framel \
+	--enable-help2man \
 	--enable-swig-iface \
 	--prefix="${PREFIX}" \
 ;
