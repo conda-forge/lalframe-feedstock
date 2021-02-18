@@ -1,6 +1,6 @@
 {% set name = "lalframe" %}
-{% set version = "1.5.3" %}
-{% set sha256 = "d0300611e706d5ca09b85ed00b4714d671a1d67a429714b5618bce4dae042de6" %}
+{% set version = "1.5.4" %}
+{% set sha256 = "cce8d6eb2636d292769b975b62665731c70a2a65e6e3546280913328c8ccbdc9" %}
 
 # dependencies
 {% set lal_version = "7.1.0" %}
@@ -19,7 +19,7 @@ source:
 build:
   error_overdepending: true
   error_overlinking: true
-  number: 2
+  number: 0
   skip: true  # [win]
 
 requirements:
