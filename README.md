@@ -9,7 +9,7 @@ Feedstock license: [BSD-3-Clause](https://github.com/conda-forge/lalframe-feedst
 
 Summary: LSC Algorithm Frame Library shared object libraries
 
-Development: https://git.ligo.org/lscsoft/lalsuite/
+Development: https://git.ligo.org/lscsoft/lalsuite.git
 
 Documentation: https://lscsoft.docs.ligo.org/lalsuite/lalframe/
 
