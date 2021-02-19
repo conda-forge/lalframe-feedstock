@@ -129,7 +129,7 @@ outputs:
 
         Note: this package only provides the importable Python libraries.
         All command-line interfaces, scripts, and executables are
-        part of the [`lalframe`](/conda-forge/lalframe) package.
+        part of the `lalframe` package.
 
   - name: lalframe
     script: install-bin.sh
