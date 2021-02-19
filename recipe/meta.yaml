@@ -60,7 +60,8 @@ outputs:
       requires:
         - pkg-config
       commands:
-        - test $(pkg-config --modversion --print-errors lalframe) == "${PKG_VERSION}"
+        - pkg-config --print-errors --exact-version "${PKG_VERSION}" lalframe
+        - test "${LALFRAME_DATADIR}" = "${PREFIX}/share/lalframe"  # [unix]
     about:
       home: https://wiki.ligo.org/Computing/LALSuite
       doc_url: https://lscsoft.docs.ligo.org/lalsuite/lalframe/
@@ -98,8 +99,6 @@ outputs:
         - {{ pin_compatible('numpy') }}
         - python
         - python-lal >={{ lal_version }}
-        # swig bindings cause segmentation fault
-        - numpy <1.20.0a0
     test:
       imports:
         - lalframe
@@ -110,7 +109,7 @@ outputs:
         - test/python
         - test/F-TEST-*.gwf
       commands:
-        - python -m pytest -rs -v test/python
+        - python -m pytest -ra -v test/python
     about:
       home: https://wiki.ligo.org/Computing/LALSuite
       doc_url: https://lscsoft.docs.ligo.org/lalsuite/lalframe/
