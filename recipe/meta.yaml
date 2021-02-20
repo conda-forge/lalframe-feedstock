@@ -1,6 +1,6 @@
 {% set name = "lalframe" %}
-{% set version = "1.5.3" %}
-{% set sha256 = "d0300611e706d5ca09b85ed00b4714d671a1d67a429714b5618bce4dae042de6" %}
+{% set version = "1.5.4" %}
+{% set sha256 = "cce8d6eb2636d292769b975b62665731c70a2a65e6e3546280913328c8ccbdc9" %}
 
 # dependencies
 {% set lal_version = "7.1.0" %}
@@ -19,7 +19,7 @@ source:
 build:
   error_overdepending: true
   error_overlinking: true
-  number: 2
+  number: 0
   skip: true  # [win]
 
 requirements:
@@ -60,11 +60,16 @@ outputs:
       requires:
         - pkg-config
       commands:
-        - test $(pkg-config --modversion --print-errors lalframe) == "${PKG_VERSION}"
+        # check library
+        - test -f ${PREFIX}/lib/liblalframe${SHLIB_EXT}  # [unix]
+        # check activate variables
+        - test "${LALFRAME_DATADIR}" = "${PREFIX}/share/lalframe"  # [unix]
+        # check pkg-config
+        - pkg-config --print-errors --exact-version "${PKG_VERSION}" lalframe
     about:
       home: https://wiki.ligo.org/Computing/LALSuite
       doc_url: https://lscsoft.docs.ligo.org/lalsuite/lalframe/
-      dev_url: https://git.ligo.org/lscsoft/lalsuite/
+      dev_url: https://git.ligo.org/lscsoft/lalsuite.git
       license: GPL-2.0-or-later
       license_family: GPL
       license_file: COPYING
@@ -98,8 +103,6 @@ outputs:
         - {{ pin_compatible('numpy') }}
         - python
         - python-lal >={{ lal_version }}
-        # swig bindings cause segmentation fault
-        - numpy <1.20.0a0
     test:
       imports:
         - lalframe
@@ -110,18 +113,23 @@ outputs:
         - test/python
         - test/F-TEST-*.gwf
       commands:
-        - python -m pytest -rs -v test/python
+        - python -m pytest -ra -v test/python
     about:
       home: https://wiki.ligo.org/Computing/LALSuite
       doc_url: https://lscsoft.docs.ligo.org/lalsuite/lalframe/
-      dev_url: https://git.ligo.org/lscsoft/lalsuite/
+      dev_url: https://git.ligo.org/lscsoft/lalsuite.git
       license: GPL-2.0-or-later
       license_family: GPL
       license_file: COPYING
       summary: LSC Algorithm Frame Library
       description: |
         The LSC Algorithm Frame Library for gravitational wave data analysis.
-        This package contains the python bindings.
+        This package contains the Python bindings of the LALFrame C libraries
+        and additional Python modules.
+
+        Note: this package only provides the importable Python libraries.
+        All command-line interfaces, scripts, and executables are
+        part of the `lalframe` package.
 
   - name: lalframe
     script: install-bin.sh
@@ -160,7 +168,7 @@ outputs:
     about:
       home: https://wiki.ligo.org/Computing/LALSuite
       doc_url: https://lscsoft.docs.ligo.org/lalsuite/lalframe/
-      dev_url: https://git.ligo.org/lscsoft/lalsuite/
+      dev_url: https://git.ligo.org/lscsoft/lalsuite.git
       license: GPL-2.0-or-later
       license_family: GPL
       license_file: COPYING
@@ -172,7 +180,7 @@ outputs:
 about:
   home: https://wiki.ligo.org/Computing/LALSuite
   doc_url: https://lscsoft.docs.ligo.org/lalsuite/lalframe/
-  dev_url: https://git.ligo.org/lscsoft/lalsuite/
+  dev_url: https://git.ligo.org/lscsoft/lalsuite.git
   license: GPL-2.0-or-later
   license_family: GPL
   license_file: COPYING
