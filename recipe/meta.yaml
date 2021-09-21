@@ -94,6 +94,10 @@ outputs:
         - make
         - pkg-config
         - swig >={{ swig_version }}
+        # extras for cross compiling with python
+        - python                              # [build_platform != target_platform]
+        - cross-python_{{ target_platform }}  # [build_platform != target_platform]
+        - numpy                               # [build_platform != target_platform]
       host:
         - {{ pin_subpackage('liblalframe', exact=True) }}
         - numpy
@@ -141,6 +145,7 @@ outputs:
         - {{ compiler('c') }}
         - help2man >=1.37
         - make
+        - sed
       host:
         - liblal >={{ lal_version }}
         - {{ pin_subpackage('liblalframe', exact=True) }}
