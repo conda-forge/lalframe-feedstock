@@ -19,7 +19,7 @@ source:
 build:
   error_overdepending: true
   error_overlinking: true
-  number: 0
+  number: 1
   skip: true  # [win]
 
 requirements:
@@ -85,6 +85,7 @@ outputs:
       error_overdepending: true
       error_overlinking: true
       ignore_run_exports:
+        - openssl
         # ignore run_exports from python's recipe
         - python
     requirements:
@@ -101,6 +102,7 @@ outputs:
       host:
         - {{ pin_subpackage('liblalframe', exact=True) }}
         - numpy
+        - openssl
         - python
       run:
         - {{ pin_subpackage('liblalframe', exact=True) }}
@@ -139,6 +141,7 @@ outputs:
     script: install-bin.sh
     build:
       ignore_run_exports:
+        - openssl
         - python
     requirements:
       build:
@@ -149,6 +152,7 @@ outputs:
       host:
         - liblal >={{ lal_version }}
         - {{ pin_subpackage('liblalframe', exact=True) }}
+        - openssl
         - python
       run:
         - liblal >={{ lal_version }}
