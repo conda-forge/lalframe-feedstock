@@ -1,5 +1,5 @@
 {% set name = "lalframe" %}
-{% set version = "2.0.1" %}
+{% set version = "2.0.2" %}
 
 # dependencies
 {% set lal_version = "7.2.0" %}
@@ -13,7 +13,7 @@ package:
 
 source:
   url: https://software.igwn.org/sources/source/lalsuite/{{ name }}-{{ version }}.tar.xz
-  sha256: 5b5f78ddd39f16a69b6d23bd54aa36657323bb6b9c038aa9ffab6b2fd6795551
+  sha256: 9bca6ddf7bbb8fe3f058e2e68d8c0b7135c28d390a0a4693fd878d6cfe2a63f3
 
 build:
   error_overdepending: true
