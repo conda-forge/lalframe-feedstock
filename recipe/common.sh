@@ -15,6 +15,7 @@ export CFLAGS=$(
 CONFIGURE_ARGS="
   --disable-doxygen
   --disable-gcc-flags
+  --disable-static
   --disable-swig-octave
   --enable-framec
   --enable-framel
