@@ -1,8 +1,8 @@
 #!/bin/bash
 
-set -e
+set -ex
 
-_make="make -j ${CPU_COUNT} V=1 VERBOSE=1"
+. ${RECIPE_DIR}/common.sh
 
 # use out-of-tree build
 mkdir -pv _build
@@ -10,22 +10,16 @@ cd _build
 
 # configure
 ${SRC_DIR}/configure \
-	--disable-doxygen \
-	--disable-gcc-flags \
-	--disable-python \
-	--disable-swig-octave \
-	--disable-swig-python \
-	--enable-framec \
-	--enable-framel \
-	--enable-help2man \
-	--enable-swig-iface \
-	--prefix="${PREFIX}" \
+  ${CONFIGURE_ARGS} \
+  --disable-python \
+  --disable-swig-python \
+  --enable-swig-iface \
 ;
 
 # build
 ${_make}
 
 # test
-if [[ "${CONDA_BUILD_CROSS_COMPILATION:-}" != "1" ]]; then
-	${_make} check
+if [[ "${CONDA_BUILD_CROSS_COMPILATION:-}" != "1" || "${CROSSCOMPILING_EMULATOR}" != "" ]]; then
+  ${_make} check
 fi
