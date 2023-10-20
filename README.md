@@ -3,6 +3,7 @@ About lalframe-feedstock
 
 Feedstock license: [BSD-3-Clause](https://github.com/conda-forge/lalframe-feedstock/blob/main/LICENSE.txt)
 
+
 About lalframe
 --------------
 
@@ -17,6 +18,7 @@ Development: https://git.ligo.org/lscsoft/lalsuite.git
 Documentation: https://lscsoft.docs.ligo.org/lalsuite/lalframe/
 
 The LSC Algorithm Frame Library for gravitational wave data analysis.
+
 
 About liblalframe
 -----------------
@@ -34,6 +36,7 @@ Documentation: https://lscsoft.docs.ligo.org/lalsuite/lalframe/
 The LSC Algorithm Frame Library for gravitational wave data analysis.
 This package contains the shared-object libraries needed to run
 applications that use the LAL Frame library.
+
 
 About python-lalframe
 ---------------------
@@ -55,6 +58,7 @@ and additional Python modules.
 Note: this package only provides the importable Python libraries.
 All command-line interfaces, scripts, and executables are
 part of the `lalframe` package.
+
 
 About lalframe
 --------------
