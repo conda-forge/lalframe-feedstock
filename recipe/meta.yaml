@@ -1,8 +1,8 @@
 {% set name = "lalframe" %}
-{% set version = "3.0.1" %}
+{% set version = "3.0.2" %}
 
 # dependencies
-{% set lal_version = "7.3.0" %}
+{% set lal_version = "7.4.0" %}
 {% set framecpp_version = "2.5.5,<3.0.0a0" %}
 {% set framel_version = "8.39.2,<9.0.0a0" %}
 {% set swig_version = "3.0.10" %}
@@ -13,7 +13,7 @@ package:
 
 source:
   url: https://software.igwn.org/sources/source/lalsuite/{{ name }}-{{ version }}.tar.xz
-  sha256: 18bfef4618b48f784cd8ba58d3cf10d2cdaa29b94e0951ba927f22d8e2243fca
+  sha256: 71e93b8fc25ab28963e947e87cf1ae8ef9de602e784d04d7bccf415a42725d9c
 
 build:
   error_overdepending: true
