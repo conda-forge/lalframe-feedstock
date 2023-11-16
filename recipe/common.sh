@@ -17,12 +17,17 @@ CONFIGURE_ARGS="
   --disable-gcc-flags
   --disable-static
   --disable-swig-octave
-  --enable-framec
-  --enable-framel
   --prefix=${PREFIX}
 "
 
 # disable help2man when cross-compiling
 if [[ "${CONDA_BUILD_CROSS_COMPILATION:-}" = "1" && "${CROSSCOMPILING_EMULATOR}" = "" ]]; then
   CONFIGURE_ARGS="${CONFIGURE_ARGS} --disable-help2man"
+fi
+
+# select frame library
+if [[ "${framel_library}" == "framecpp" ]]; then
+    CONFIGURE_ARGS="${CONFIGURE_ARGS} --disable-framel --enable-framec"
+elif [[ "${framel_library}" == "framel" ]]; then
+    CONFIGURE_ARGS="${CONFIGURE_ARGS} --disable-framec --enable-framel"
 fi
