@@ -7,6 +7,9 @@
 {% set framel_version = "8.39.2,<9.0.0a0" %}
 {% set swig_version = "3.0.10" %}
 
+# default frame_library implememntation to framel (it's much smaller)
+{% set frame_library = frame_library or "framel" %}
+
 package:
   name: {{ name }}-split
   version: {{ version }}
@@ -18,7 +21,7 @@ source:
 build:
   error_overdepending: true
   error_overlinking: true
-  number: 0
+  number: 1
   skip: true  # [win]
 
 requirements:
@@ -29,8 +32,8 @@ requirements:
     - pkg-config
     - swig >={{ swig_version }}
   host:
-    - ldas-tools-framecpp >={{ framecpp_version }}
-    - libframel >={{ framel_version }}
+    - ldas-tools-framecpp >={{ framecpp_version }}  # [frame_library == "framecpp" ]
+    - libframel >={{ framel_version }}  # [frame_library == "framel"]
     - liblal >={{ lal_version }}
 
 outputs:
@@ -39,18 +42,19 @@ outputs:
     build:
       run_exports:
         - {{ pin_subpackage("liblalframe", max_pin="x") }}
+      string: {{ frame_library }}_h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}
     requirements:
       build:
         - {{ compiler('c') }}
         - make  # [not win]
         - swig >={{ swig_version }}
       host:
-        - ldas-tools-framecpp >={{ framecpp_version }}
-        - libframel >={{ framel_version }}
+        - ldas-tools-framecpp >={{ framecpp_version }}  # [frame_library == "framecpp"]
+        - libframel >={{ framel_version }}  # [frame_library == "framel"]
         - liblal >={{ lal_version }}
       run:
-        - ldas-tools-framecpp >={{ framecpp_version }}
-        - libframel >={{ framel_version }}
+        - ldas-tools-framecpp >={{ framecpp_version }}  # [frame_library == "framecpp"]
+        - libframel >={{ framel_version }}  # [frame_library == "framel"]
         - liblal >={{ lal_version }}
       run_constrained:
         - lalframe >=1.5.3
@@ -81,6 +85,10 @@ outputs:
     build:
       error_overdepending: true
       error_overlinking: true
+      force_use_keys:
+        # use the frame_library variant to build the hash
+        # enables unique hashes for each variant
+        - frame_library
       ignore_run_exports:
         - numpy
         - python
@@ -135,6 +143,10 @@ outputs:
   - name: lalframe
     script: install-bin.sh
     build:
+      force_use_keys:
+        # use the frame_library variant to build the hash
+        # enables unique hashes for each variant
+        - frame_library
       ignore_run_exports:
         - python
     requirements:
