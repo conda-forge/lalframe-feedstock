@@ -3,8 +3,6 @@
 
 # dependencies
 {% set lal_version = "7.4.0" %}
-{% set framecpp_version = "2.5.5,<3.0.0a0" %}
-{% set framel_version = "8.39.2,<9.0.0a0" %}
 {% set swig_version = "3.0.10" %}
 
 package:
@@ -18,7 +16,7 @@ source:
 build:
   error_overdepending: true
   error_overlinking: true
-  number: 0
+  number: 1
   skip: true  # [win]
 
 requirements:
@@ -29,9 +27,9 @@ requirements:
     - pkg-config
     - swig >={{ swig_version }}
   host:
-    - ldas-tools-framecpp >={{ framecpp_version }}
-    - libframel >={{ framel_version }}
-    - liblal >={{ lal_version }}
+    - ldas-tools-framecpp
+    - libframel
+    - liblal {{ lal_version }}
 
 outputs:
   - name: liblalframe
@@ -45,13 +43,9 @@ outputs:
         - make  # [not win]
         - swig >={{ swig_version }}
       host:
-        - ldas-tools-framecpp >={{ framecpp_version }}
-        - libframel >={{ framel_version }}
-        - liblal >={{ lal_version }}
-      run:
-        - ldas-tools-framecpp >={{ framecpp_version }}
-        - libframel >={{ framel_version }}
-        - liblal >={{ lal_version }}
+        - ldas-tools-framecpp
+        - libframel
+        - liblal {{ lal_version }}
       run_constrained:
         - lalframe >=1.5.3
         - python-lalframe >=1.5.3
@@ -144,11 +138,10 @@ outputs:
         - make
         - sed
       host:
-        - liblal >={{ lal_version }}
+        - liblal {{ lal_version }}
         - {{ pin_subpackage('liblalframe', exact=True) }}
         - python
       run:
-        - liblal >={{ lal_version }}
         - {{ pin_subpackage('liblalframe', exact=True) }}
         - python
         - {{ pin_subpackage('python-lalframe', exact=True) }}
