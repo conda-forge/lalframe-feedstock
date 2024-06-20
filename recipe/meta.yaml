@@ -16,7 +16,7 @@ source:
 build:
   error_overdepending: true
   error_overlinking: true
-  number: 1
+  number: 2
   skip: true  # [win]
 
 requirements:
@@ -109,6 +109,7 @@ outputs:
         - test/F-TEST-*.gwf
       commands:
         - python -m pytest -ra -v test/python
+        - python -c "import lalframe; stream = lalframe.FrStreamOpen('test', 'F-TEST-600000000-60.gwf'); series = lalframe.FrStreamReadINT4TimeSeries(stream, 'H1:LSC-AS_Q', 600000000, -1, 0); print(series); print(series.data); print(series.data.data);"
     about:
       home: https://wiki.ligo.org/Computing/LALSuite
       doc_url: https://lscsoft.docs.ligo.org/lalsuite/lalframe/
