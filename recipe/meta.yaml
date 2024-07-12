@@ -16,12 +16,13 @@ source:
 build:
   error_overdepending: true
   error_overlinking: true
-  number: 1
+  number: 2
   skip: true  # [win]
 
 requirements:
   build:
     - {{ compiler('c') }}
+    - {{ stdlib("c") }}
     - help2man >=1.37
     - make
     - pkg-config
@@ -40,6 +41,7 @@ outputs:
     requirements:
       build:
         - {{ compiler('c') }}
+        - {{ stdlib("c") }}
         - make  # [not win]
         - swig >={{ swig_version }}
       host:
@@ -81,6 +83,7 @@ outputs:
     requirements:
       build:
         - {{ compiler('c') }}
+        - {{ stdlib("c") }}
         - help2man >=1.37
         - make
         - pkg-config
@@ -95,7 +98,6 @@ outputs:
         - python
       run:
         - {{ pin_subpackage('liblalframe', exact=True) }}
-        - {{ pin_compatible('numpy') }}
         - python
         - python-lal >={{ lal_version }}
     test:
@@ -134,6 +136,7 @@ outputs:
     requirements:
       build:
         - {{ compiler('c') }}
+        - {{ stdlib("c") }}
         - help2man >=1.37
         - make
         - sed
