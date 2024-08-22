@@ -2,7 +2,7 @@
 {% set version = "3.0.5" %}
 
 # dependencies
-{% set lal_version = "7.5.0" %}
+{% set lal_version = "7.6.0" %}
 {% set swig_version = "3.0.10" %}
 
 package:
@@ -14,7 +14,6 @@ source:
   sha256: 47b5facd552484ea1e08935251441441ba0997329c37a752adc6fc1e43e6d243
 
 build:
-  error_overdepending: true
   error_overlinking: true
   number: 0
   skip: true  # [win]
@@ -75,11 +74,7 @@ outputs:
   - name: python-lalframe
     script: build-python.sh
     build:
-      error_overdepending: true
       error_overlinking: true
-      ignore_run_exports:
-        - numpy
-        - python
     requirements:
       build:
         - {{ compiler('c') }}
