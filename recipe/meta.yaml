@@ -1,8 +1,8 @@
 {% set name = "lalframe" %}
-{% set version = "3.0.4" %}
+{% set version = "3.0.5" %}
 
 # dependencies
-{% set lal_version = "7.5.0" %}
+{% set lal_version = "7.6.0" %}
 {% set swig_version = "3.0.10" %}
 
 package:
@@ -11,12 +11,11 @@ package:
 
 source:
   url: https://software.igwn.org/sources/source/lalsuite/{{ name }}-{{ version }}.tar.xz
-  sha256: f08cb469e7f29c78cb0e03bc437f2a79caeb5864f1d6bfe438427a8e3449b685
+  sha256: 47b5facd552484ea1e08935251441441ba0997329c37a752adc6fc1e43e6d243
 
 build:
-  error_overdepending: true
   error_overlinking: true
-  number: 2
+  number: 0
   skip: true  # [win]
 
 requirements:
@@ -75,11 +74,7 @@ outputs:
   - name: python-lalframe
     script: build-python.sh
     build:
-      error_overdepending: true
       error_overlinking: true
-      ignore_run_exports:
-        - numpy
-        - python
     requirements:
       build:
         - {{ compiler('c') }}
