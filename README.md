@@ -20,6 +20,23 @@ Documentation: https://lscsoft.docs.ligo.org/lalsuite/lalframe/
 The LSC Algorithm Frame Library for gravitational wave data analysis.
 
 
+About lalframe
+--------------
+
+Home: https://wiki.ligo.org/Computing/LALSuite
+
+Package license: GPL-2.0-or-later
+
+Summary: LSC Algorithm Frame Library
+
+Development: https://git.ligo.org/lscsoft/lalsuite.git
+
+Documentation: https://lscsoft.docs.ligo.org/lalsuite/lalframe/
+
+The LSC Algorithm Frame Library for gravitational wave data analysis.
+This package contains the runtime tools.
+
+
 About liblalframe
 -----------------
 
@@ -58,23 +75,6 @@ and additional Python modules.
 Note: this package only provides the importable Python libraries.
 All command-line interfaces, scripts, and executables are
 part of the `lalframe` package.
-
-
-About lalframe
---------------
-
-Home: https://wiki.ligo.org/Computing/LALSuite
-
-Package license: GPL-2.0-or-later
-
-Summary: LSC Algorithm Frame Library
-
-Development: https://git.ligo.org/lscsoft/lalsuite.git
-
-Documentation: https://lscsoft.docs.ligo.org/lalsuite/lalframe/
-
-The LSC Algorithm Frame Library for gravitational wave data analysis.
-This package contains the runtime tools.
 
 
 Current build status
