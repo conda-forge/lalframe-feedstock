@@ -1,0 +1,227 @@
+schema_version: 1
+
+context:
+  version: "3.0.7"
+  build_number: 3
+  # dependencies
+  lal_version: 7.7.0
+  swig_version: 4.4.1
+
+recipe:
+  name: lalframe-split
+  version: ${{ version }}
+
+source:
+  - url: https://software.igwn.org/sources/source/lalsuite/lalframe-${{ version }}.tar.xz
+    sha256: 06b23443881c460a3f240f5cdbbec8cbdf32d70a3eb8a086fbfbf69a378d2cc0
+
+build:
+  number: ${{ build_number }}
+  skip:
+    - win
+
+outputs:
+
+  # -- Staging -----------------------
+
+  - staging:
+      name: lalframe-c-build
+    build:
+      script: build.sh
+    requirements:
+      build:
+        - ${{ compiler('c') }}
+        - ${{ stdlib('c') }}
+        - make
+        - pkg-config
+        - python >=3.6
+        - swig ${{ swig_version }}.*
+      host:
+        - ldas-tools-framecpp
+        - libframel
+        - liblal ==${{ lal_version }}
+
+  # -- Packages ----------------------
+
+  - package:
+      name: liblalframe
+    inherit: lalframe-c-build
+    build:
+      dynamic_linking:
+        overdepending_behavior: error
+      files:
+        - include/lal/
+        - lib/liblalframe*
+        - lib/pkgconfig/lalframe*.pc
+    requirements:
+      build:
+        - ${{ compiler('c') }}
+        - ${{ stdlib('c') }}
+      run_exports:
+        - ${{ pin_subpackage("liblalframe", upper_bound="x") }}
+      run_constraints:
+        - lalframe >=1.5.3
+        - python-lalframe >=1.5.3
+    tests:
+      - package_contents:
+          lib:
+            - lalframe
+      - requirements:
+          run:
+            - pkg-config
+        script:
+          - pkg-config --print-errors --exact-version "${PKG_VERSION}" lalframe
+    about:
+      summary: LSC Algorithm Frame Library shared object libraries
+      description: |
+        The LSC Algorithm Frame Library for gravitational wave data analysis.
+        This package contains the shared-object libraries needed to run
+        applications that use the LAL Frame library.
+
+  - package:
+      name: python-lalframe
+    inherit:
+      from: lalframe-c-build
+      run_exports: false
+    build:
+      dynamic_linking:
+        overdepending_behavior: error
+      files:
+        - lib/python*/site-packages/
+      script: build-python.sh
+      variant:
+        # use the same keys as liblalframe so that we ensure a unique
+        # python-lalframe build string for each unique liblalframe build
+        use_keys:
+          - ldas_tools_framecpp
+          - libframel
+    requirements:
+      build:
+        - ${{ compiler('c') }}
+        - ${{ stdlib('c') }}
+        - make
+        - pkg-config
+        - swig ${{ swig_version }}.*
+        - if: build_platform != target_platform
+          then:
+            - cross-python_${{ target_platform }}
+            - numpy
+            - python
+      host:
+        - ${{ pin_subpackage("liblalframe", exact=True) }}
+        - numpy
+        - python
+      run:
+        - ${{ pin_subpackage("liblalframe", exact=True) }}
+        - python
+        - python-lal >=${{ lal_version }}
+    tests:
+      - python:
+          imports:
+            - lalframe
+            - lalframe.frread
+          pip_check: false
+      - requirements:
+          run:
+            - pytest >=4.0
+        files:
+          source:
+            - test/python/
+            - test/F-TEST-600000060-60.gwf
+        script:
+          - python -m pytest -ra -v test/python
+    about:
+      summary: LSC Algorithm Frame Library Python bindings
+      description: |
+        The LSC Algorithm Frame Library for gravitational wave data analysis.
+        This package contains the Python bindings of the LALFrame C libraries
+        and additional Python modules.
+
+        Note: this package only provides the importable Python libraries.
+        All command-line interfaces, scripts, and executables are
+        part of the `lalframe` package.
+
+  - package:
+      name: lalframe
+    inherit:
+      from: lalframe-c-build
+      run_exports: false
+    build:
+      dynamic_linking:
+        overdepending_behavior: error
+      files:
+        - bin/
+        - etc/lalframe-user-env.*
+        - share/man/
+      script: install-bin.sh
+      variant:
+        # use the same keys as liblalframe so that we ensure a unique
+        # lalframe build string for each unique liblalframe build
+        use_keys:
+          - ldas_tools_framecpp
+          - libframel
+    requirements:
+      build:
+        - ${{ compiler('c') }}
+        - ${{ stdlib('c') }}
+        - help2man >=1.37
+        - make
+        - pkg-config
+        - sed
+        - swig ${{ swig_version }}.*
+        - if: build_platform != target_platform
+          then:
+            - cross-python_${{ target_platform }}
+            - numpy
+            - python
+      host:
+        - ${{ pin_subpackage("liblalframe", exact=True) }}
+        - liblal ==${{ lal_version }}
+        # needed by ./configure
+        - numpy
+        - python
+      run:
+        - ${{ pin_subpackage("liblalframe", exact=True) }}
+        - ${{ pin_subpackage("python-lalframe", exact=True) }}
+        - python
+    tests:
+      - python:
+          imports:
+            - lalframe
+          pip_check: false
+      - files:
+          source:
+            - test/F-TEST-600000000-60.gwf
+        script:
+          - lalframe_version --verbose
+          # the user environment script rewrites PATH, so check that it still works
+          - bash -c '. "${PREFIX}/etc/lalframe-user-env.sh" && lalframe_version'
+          - lalfr-cksum test/F-TEST-600000000-60.gwf
+          - lalfr-cut H1:LSC-AS_Q test/F-TEST-600000000-60.gwf > /dev/null
+          - lalfr-dump test/F-TEST-600000000-60.gwf
+          - lalfr-paste test/F-TEST-600000000-60.gwf > /dev/null
+          - lalfr-split test/F-TEST-600000000-60.gwf
+          - lalfr-stat test/F-TEST-600000000-60.gwf
+          - lalfr-stream --channel H1:LSC-AS_Q --start-time 600000000 --duration 0.01 --frame-glob test/F-TEST-*.gwf
+          - lalfr-vis --channel H1:LSC-AS_Q --start-time 600000000 --duration 0.01 --frame-glob test/F-TEST-*.gwf
+    about:
+      summary: LSC Algorithm Frame Library
+      description: |
+        The LSC Algorithm Frame Library for gravitational wave data analysis.
+        This package contains the runtime tools.
+
+about:
+  summary: LSC Algorithm Frame Library
+  description: |
+    The LSC Algorithm Frame Library for gravitational wave data analysis.
+  homepage: https://wiki.ligo.org/Computing/LALSuite
+  documentation: https://lscsoft.docs.ligo.org/lalsuite/lalframe/
+  repository: https://git.ligo.org/lscsoft/lalsuite/
+  license: GPL-2.0-or-later
+  license_file: COPYING
+
+extra:
+  feedstock-name: lalframe
+  recipe-maintainers:
+    - duncanmmacleod
+    - skymoo

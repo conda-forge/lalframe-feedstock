@@ -1,12 +1,37 @@
 #!/bin/bash
+#
+# Configure, build, and install the LALFrame executables and the
+# system configuration files.
+#
 
 set -ex
 
-_make="make -j ${CPU_COUNT} V=1 VERBOSE=1"
+. ${RECIPE_DIR}/common.sh
 
-# install from python build directory
-_pybuilddir="_build${PY_VER}"
-cd ${_pybuilddir}
+# build in a sub-directory using a copy of the C build
+_builddir="_build${PY_VER}_bin"
+cp -r _build ${_builddir}
+cd ${_builddir}
+
+# the user environment scripts embed the path that configure finds for sed,
+# which must not point into the build environment as that won't exist at
+# runtime, so use the bare name to find sed on the user's PATH
+export SED="sed"
+
+# configure with Python support (as for python-lalframe) so that the
+# user environment scripts include the Python paths
+${SRC_DIR}/configure \
+  ${CONFIGURE_ARGS} \
+  --disable-swig-iface \
+  --enable-python \
+  --enable-swig-python \
+;
+
+# patch out dependency_libs from libtool archive to prevent overlinking
+sed -i.tmp '/^dependency_libs/d' lib/liblalframe.la
+
+# build
+${_make} -C bin
 
 # install binaries
 ${_make} install -C bin
