@@ -1,10 +1,10 @@
 schema_version: 1
 
 context:
-  version: "3.0.7"
-  build_number: 3
+  version: "3.1.0"
+  build_number: 0
   # dependencies
-  lal_version: 7.7.0
+  lal_version: 8.0.0
   swig_version: 4.4.1
 
 recipe:
@@ -13,7 +13,7 @@ recipe:
 
 source:
   - url: https://software.igwn.org/sources/source/lalsuite/lalframe-${{ version }}.tar.xz
-    sha256: 06b23443881c460a3f240f5cdbbec8cbdf32d70a3eb8a086fbfbf69a378d2cc0
+    sha256: be70d9fef48dd73db1e02e77b1d294266116793f9503cf5a73145768a25445fc
 
 build:
   number: ${{ build_number }}
@@ -39,7 +39,7 @@ outputs:
       host:
         - ldas-tools-framecpp
         - libframel
-        - liblal ==${{ lal_version }}
+        - liblal ${{ lal_version }}.*
 
   # -- Packages ----------------------
 
@@ -176,7 +176,7 @@ outputs:
             - python
       host:
         - ${{ pin_subpackage("liblalframe", exact=True) }}
-        - liblal ==${{ lal_version }}
+        - liblal ${{ lal_version }}.*
         # needed by ./configure
         - numpy
         - python
