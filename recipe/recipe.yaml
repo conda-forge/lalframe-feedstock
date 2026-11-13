@@ -1,7 +1,7 @@
 schema_version: 1
 
 context:
-  version: "3.1.0"
+  version: "3.1.1"
   # dependencies
   lal_version: 8.0.0
   swig_version: 4.4.1
@@ -12,10 +12,10 @@ recipe:
 
 source:
   - url: https://software.igwn.org/sources/source/lalsuite/lalframe-${{ version }}.tar.xz
-    sha256: be70d9fef48dd73db1e02e77b1d294266116793f9503cf5a73145768a25445fc
+    sha256: d3743ba030845140c6bd95f9dc2e05d4803d01dabaed67bf4b743a141b6afccb
 
 build:
-  number: 1
+  number: 0
   skip:
     - win
 
