@@ -15,7 +15,7 @@ channel_targets:
 docker_image:
 - quay.io/condaforge/linux-anvil-aarch64:alma10
 ldas_tools_framecpp:
-- '2.9'
+- '4.1'
 libframel:
 - '8.41'
 numpy:
